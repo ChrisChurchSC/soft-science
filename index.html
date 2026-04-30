@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soft Science</title>
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { overflow: hidden; }
+
+    body {
+      background-color: #ff2d9b;
+      background-image:
+        radial-gradient(circle, rgba(0,0,0,0.25) 0.5px, transparent 0.5px),
+        linear-gradient(118deg, transparent 28%, rgba(255,40,0,0.35) 40%, rgba(255,0,0,0.65) 48%, rgba(255,40,0,0.35) 56%, transparent 68%);
+      background-size: 6px 6px, 100% 100%;
+      font-family: 'DIN Alternate', 'DIN Condensed', 'Arial Narrow', Arial, sans-serif;
+      color: #000;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .legal-top {
+      position: absolute;
+      top: 32px;
+      left: 32px;
+      display: flex;
+      gap: 20px;
+    }
+
+    .legal-top a {
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.4);
+      text-decoration: none;
+    }
+
+    .legal-top a:hover { color: #000; }
+
+    .logo-wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 240px;
+    }
+
+    .logo-wrap svg { width: 100%; height: auto; display: block; }
+
+    .bottom {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      width: 268px;
+      background: #0a0a0a;
+      border: 1px solid rgba(255,45,155,0.3);
+            z-index: 5;
+    }
+
+    .bottom-titlebar {
+      height: 30px;
+      background: #111;
+      border-bottom: 1px solid rgba(255,45,155,0.15);
+            display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+    }
+
+    .bottom-titlebar span {
+      font-family: 'DIN Alternate', 'DIN Condensed', 'Arial Narrow', Arial, sans-serif;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,45,155,0.45);
+    }
+
+    .grid { display: flex; flex-direction: column; }
+
+    .col {
+      padding: 14px 20px;
+      border-top: 1px solid rgba(255,45,155,0.5);
+    }
+
+    .col:first-child { border-top: none; }
+
+    .col-label {
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,45,155,0.6);
+      padding-bottom: 10px;
+      border-bottom: 2px solid rgba(255,45,155,0.5);
+      margin-bottom: 0;
+    }
+
+    .col-item {
+      display: block;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #ff2d9b;
+      text-decoration: none;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,45,155,0.2);
+    }
+
+    .col-item:last-child { border-bottom: none; }
+    .col-item:hover { opacity: 0.45; }
+
+    .col-item.cta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: none;
+      margin-top: 4px;
+      color: rgba(255,45,155,0.5);
+    }
+
+    .email-wrap {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,45,155,0.2);
+    }
+
+    .email-wrap input {
+      flex: 1;
+      background: none;
+      border: none;
+      font-family: 'DIN Alternate', 'DIN Condensed', 'Arial Narrow', Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      color: #ff2d9b;
+      padding: 8px 0;
+      outline: none;
+    }
+
+    .email-wrap input::placeholder { color: rgba(255,45,155,0.3); }
+
+    .email-wrap button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      color: #ff2d9b;
+      padding: 0;
+    }
+
+    .email-wrap button:hover { opacity: 0.45; }
+
+    .bottom-left {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      max-width: 268px;
+      background: #0a0a0a;
+      border: 1px solid rgba(255,45,155,0.3);
+          }
+
+    .bottom-left p {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: #ff2d9b;
+      padding: 14px 20px;
+    }
+
+    .idea-drawer {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 268px;
+      background: #0a0a0a;
+      border: 1px solid rgba(255,45,155,0.3);
+      z-index: 6;
+      max-height: calc(100vh - 80px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .idea-drawer.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .mac-titlebar {
+      height: 30px;
+      flex-shrink: 0;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      border-bottom: 1px solid rgba(255,45,155,0.15);
+    }
+
+
+    .mac-title {
+      font-family: 'DIN Alternate', 'DIN Condensed', 'Arial Narrow', Arial, sans-serif;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,45,155,0.45);
+      white-space: nowrap;
+    }
+
+    .mac-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 16px 20px;
+    }
+
+    .mac-content::-webkit-scrollbar { width: 4px; }
+    .mac-content::-webkit-scrollbar-track { background: transparent; }
+    .mac-content::-webkit-scrollbar-thumb { background: rgba(255,45,155,0.3); border-radius: 2px; }
+
+    .mac-resize { display: none; }
+
+    .drawer-body p {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: rgba(255,45,155,0.7);
+      margin-bottom: 10px;
+    }
+
+    .drawer-body p:last-child { margin-bottom: 0; }
+
+    .apply-field {
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid rgba(255,45,155,0.2);
+      padding: 8px 0;
+    }
+
+    .apply-field:first-of-type { border-top: 1px solid rgba(255,45,155,0.2); }
+
+    .apply-field label {
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,45,155,0.45);
+      margin-bottom: 4px;
+    }
+
+    .apply-field input,
+    .apply-field textarea {
+      background: none;
+      border: none;
+      outline: none;
+      font-family: 'DIN Alternate', 'DIN Condensed', 'Arial Narrow', Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      color: #ff2d9b;
+      resize: none;
+    }
+
+    .apply-field input::placeholder,
+    .apply-field textarea::placeholder { color: rgba(255,45,155,0.25); }
+
+    .apply-submit {
+      margin-top: 14px;
+      width: 100%;
+      background: #ff2d9b;
+      border: none;
+      color: #000;
+      font-family: 'DIN Alternate', 'DIN Condensed', 'Arial Narrow', Arial, sans-serif;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .apply-submit:hover { opacity: 0.85; }
+
+    .minimized > *:not(.bottom-titlebar):not(.mac-titlebar) { display: none; }
+    .window-closed { display: none !important; }
+
+    #clock {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    #clock .clock-label {
+      font-family: 'DIN Alternate', 'DIN Condensed', 'Arial Narrow', Arial, sans-serif;
+      font-size: 7px;
+      font-weight: 900;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.35);
+    }
+
+    #clock .clock-time {
+      font-family: 'DIN Alternate', 'DIN Condensed', 'Arial Narrow', Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      color: rgba(0,0,0,0.55);
+      font-variant-numeric: tabular-nums;
+    }
+
+    #clock .clock-ms {
+      font-size: 9px;
+      opacity: 0.6;
+    }
+
+    @media (max-width: 768px) {
+      html { overflow-y: auto; }
+      body {
+        height: auto; min-height: 100vh;
+        overflow-y: auto; overflow-x: hidden;
+        display: flex; flex-direction: column;
+        padding-bottom: 80px;
+      }
+      .legal-top { order: 1; position: relative; top: auto; left: auto; padding: 20px 16px 0; }
+      .logo-wrap  { order: 2; position: relative; top: auto; left: auto; transform: none; width: 70%; margin: 32px auto 28px; }
+      .bottom-left { order: 3; position: relative !important; left: auto !important; top: auto !important; right: auto !important; bottom: auto !important; transform: none !important; width: 100% !important; max-width: 100% !important; }
+      #imageCard, #plasmaCard { order: 4; position: relative !important; left: auto !important; top: auto !important; right: auto !important; bottom: auto !important; transform: none !important; width: 100% !important; max-width: 100% !important; }
+      .bottom { order: 5; position: relative !important; left: auto !important; top: auto !important; right: auto !important; bottom: auto !important; transform: none !important; width: 100% !important; max-width: 100% !important; }
+      #clock  { order: 6; position: relative; bottom: auto; right: auto; padding: 16px; align-items: flex-start; }
+      #applyDrawer, #ideaDrawer { width: 92% !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="legal-top">
+    <a href="#" onclick="event.preventDefault();openDrawer('privacyDrawer');">Privacy Policy</a>
+    <a href="#" onclick="event.preventDefault();openDrawer('termsDrawer');">Terms of Use</a>
+  </div>
+
+  <div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1;pointer-events:none;">
+    <img src="sodtscience_illo_01.png" width="320" height="320" style="display:block;mix-blend-mode:multiply;opacity:0.55;">
+  </div>
+  <div class="logo-wrap">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4333.91 1402.76">
+      <path fill="#000000" stroke="#ff2d9b" stroke-miterlimit="10" stroke-width="55" d="M3995.91,855.03c82-10.66,185.54,9.58,267.75-.25,60.62-7.24,77.69-147.29,18.99-159.18h-486.18c-63.04,12.8-37.48,84.23-65.16,110.83-37.96,36.49-73.02-33.11-99.64-55.85-95.75-81.81-246.14-95.37-376.01-57.05-21.13,6.24-41.2-12.75-35.76-34.11.03-.12.06-.24.09-.36,19.66-74.82,19.86-186.11,29.68-266.32,6.68-54.52,14.14-109.61,24.41-163.59,49.24-74.82,184.51,20.4,211.7-80.3,10.83-40.11,20.69-113.47-38.45-114.76-170.09,7.1-347.02-8.91-516.3.01-42.89,2.26-52.58,2.6-95.72,0-147.26-8.88-303.58,6.63-451.79.5-47.62,9.5-54.93,40.41-61.79,82.21-4.71,28.73-8.34,128.91-22.7,145.27-32.75,37.3-54.3-60.44-63.75-79.95-101.02-208.42-453.86-209.37-608.22-63.99-67.28,63.37-96.08,147.79-116.19,235.81-29.54,35.38-63.52-4.3-92.27-19.14-74.09-38.23-159.74-40.79-238.26-61.74-36.59-9.76-80.01-19.93-70.23-67.91,10.79-52.94,132.03-46.84,165.1-18.96,19.28,16.25,16.55,47.44,45.68,54.32,22.75,5.37,108.55,4.31,134.43,1.88,66.92-6.29,56.07-74.7,30.61-118.92-99.83-173.35-638.61-148.47-603.65,143.65,18.14,151.61,209.73,155.53,322.87,189.14,20.51,6.09,67.27,19.39,74.21,41.76,26.34,84.86-140.4,93.96-188.17,52.2-24.78-21.67-21.36-58.59-51.8-68.2-22.89-7.22-124.7-6.57-151.18-2.73-66.76,9.68-52.86,89.16-26.34,132.24,20.7,33.63,55.91,59.68,99.41,78.53-26.41,6.42-51.14,14.87-73.16,25.18-84.19,39.4-153.56,116.34-183.72,204.28-8.07,23.53-15.11,79.14-25.06,94.94-20.78,33-57.05-3.1-77.72-13.87-96.31-50.17-186.5-41.04-275.98-76.02-17.35-6.78-40.97-20.23-43.94-40.2-10.65-71.67,136.96-77.44,173.61-29.47,13.46,17.62,11.99,40.95,41.15,46.85,16.54,3.35,135.31,3.45,149.3-.87,29.59-9.12,34.95-45.39,31.44-71.88-27.17-204.68-601.88-227.13-619.84,55.49-9.24,145.46,95.77,174.29,211.32,205.04,39.96,10.63,151.31,27.78,175.63,54.36,5.62,6.15,9.51,20.24,9.59,28.74.68,73.81-158.95,74.68-198.05,25.74-17.26-21.61-11.55-52.69-45.25-58.75-26.44-4.75-123.2-4.4-151.15-1.04-75.36,9.07-39.31,114.96-5.79,153.97,110.04,128.05,479.92,125.3,587.79-7.97,13.59-16.79,27.63-56.12,50.78-56.88,21.7-.71,44.96,43.43,59.25,59.03,113.11,123.43,370.18,125.38,507.28,43.16,22.43-13.45,81.89-70.29,97.09-71.16,52.1-3,10.48,80.88,48.17,103.46,19.64,11.77,121.26,11.86,144.79,5.74,26.26-6.83,43.82-34.2,47.72-60.28l65.01-551.06c2.63-27.82-7.75-56.96-38.25-61.67-19.55-3.02-112.3-2.96-129.86,1.62-57.8,15.09-28.98,96.02-70.41,117.59-34.87,18.16-53.99-29.87-73.49-49.45-18.65-18.73-40.96-34.28-65.78-46.87,72.19-13.25,135.31-39.26,172.01-76.99,13.62-14,44.65-70.29,56.25-73.8,28.94-8.75,48.62,38.38,65.27,57.1,41.22,46.35,97.92,74.42,159.21,89.22-8.55,9.4-14.25,21.83-17.84,36.41l-68.96,574.41c5.46,31.52,23.02,43.36,53.91,46.44,144.79,14.46,312.67-10.68,459.91,0,38.35-1.33,58.33-38.7,98.27-26.16,9.39,2.95,14.14,13.04,22.66,17.33,24.34,12.25,124.56,13.18,150.07,3.83,18.02-6.6,32.48-24.1,37.27-42.73,18.79-73.03,10.34-173.78,30.83-245.17,7.74-26.94,30.32-39.94,50.31-16.43,45.96,83.37,78.59,191.54,129.37,270.63,15.04,23.42,32.74,35.81,61.31,38.69,29.37,2.97,94.94,3.33,123.97.06,95.35-10.76,43.08-149.52,87.71-176.27,36.96-22.16,45.47,23.56,57.55,42.99,110.85,178.32,424.59,193.59,578.64,69.18,16.16-13.05,39.11-46.65,60.4-47.87,44.08-2.53,27.32,47.69,29.99,69.58,2.95,24.17,19.13,38.51,42.73,41.35l478.52.59c21.27-2.81,36.12-9.96,47.27-28.73,11.75-19.77,18.44-77.02,14.22-99.89-3.94-21.33-19.94-33.2-40.86-35.13-81.07-7.47-175.29,8.26-256.14.14-10.43-1.05-33.29-6.51-40.82-13.2-26.81-23.81-12.82-75.61,22.65-84.87,68.29-9.14,147.06,5.79,214.12-1.88,70.4-8.05,88.9-147.82,20.09-156.1-61.75-7.42-142.82,9.29-203.13-.87-60.49-10.18-46.19-86.69,15.38-94.7ZM1414.55,987.72c8.84,21.9,2.89,89.7-17.07,104.88-32.99,25.1-145.03-2.28-191.98,16.02-26.12,10.18-38.26,49.57-57.34,68.66-48.26,48.29-143.56,57.16-198.24,15.06-86.55-66.63-58.63-251.79,17.78-317.53,63.72-54.83,173.14-49.99,216.05,27.71,10.3,18.65,11.37,45.25,34.93,53.07,45.43,15.1,174.86-19.92,195.88,32.12ZM1821.99,555.47c-131.92-39.91-110.13-253.12-31.4-331.81,70.49-70.46,201.72-60.29,242.02,37.18,57.13,138.18-39.81,346.3-210.62,294.62ZM2334.62,741.75c-17.39,108.15-23.36,217.92-37.56,326.44-3.37,25.77-12,111.18-25.23,126.77-21.4,25.2-54.93,11.89-80.09,11.58-79.8-.99-183.64,8.77-259.72-.28-68.78-8.18-62.77-89.29-11.5-98.61,61.81-11.23,178.93,14.23,231.83-8.17,27.77-11.76,35.14-38.6,37.37-66.63,3.31-41.55,3.71-77.67-45.99-82.3-60.37-5.63-142.3,9.48-199.21-.79-51.86-9.36-44.25-87.07,19.5-94.61,80.95-9.58,177.9,7.39,259.71-.29,33.79-3.17,48.3-19.89,56.05-51.95,8.55-35.37,17.81-102.38-32.12-108.3l-206.86.03c69.29-27.9,124.27-74.84,170.07-144.7,9.53-14.54,31.71-75.81,56.25-43.59,20.29,26.63-10.7,119.31-10.28,153.95.32,26.33,20.53,47,46.35,49.96,9.87,1.13,28.73,1.83,49.13,1.89-8.34,8.53-14.71,19.19-17.7,29.6ZM3067.52,806.65c-15.79,17.75-44.06,79.79-73.82,53.88-32.57-28.36,42.34-156.31-42.14-165.83-23.28-2.62-93.09-3.08-115.07.93-20.58,3.75-38.15,20.13-44.19,39.81-21.55,70.07-10.88,171.19-31.88,240.12-14.47,47.48-40.68,31.66-59.55-2.15-38.79-69.49-66.4-156.42-103.87-228.13-13.88-26.57-24.28-46.78-57.43-50.57-14.46-1.66-51.28-2.73-86.37-2.62,38.49-45.28,9.94-165.65,56.07-199.72,39.95-29.51,173.79-5.76,228.96-15.04,26.32-4.43,45.2-28.42,50.03-53.97,2.65-14.01,5.86-52.33,3.15-65.3-5.18-24.73-23.79-37.63-48.01-39.97-57.66-5.58-127.6,7.11-184.29.29-65.51-7.88-49.8-113.23,8-120.18,76.07-9.16,170.09,6.84,248.24.24,17.58-1.48,38.99-12.47,51.93-12.34,11.08.11,28.53,10.56,43.97,12.15,51.05,5.26,148.19-24.6,146.08,53.86-3.04,112.71-34.08,241.52-44.09,356.22-3.03,34.7-16.47,92.46,30.91,101.02,4.48.81,13.41,3.12,24.81,6.19,31.9,8.58,41.81,48.74,17.78,71.4-6.73,6.34-13.14,12.93-19.2,19.75ZM3712.56,1059.68c-16.13,67.03-113.92,38.85-169.14,42.86-65.87,4.78-54.27,23.53-88.18,63.82-57.31,68.08-188.12,75.53-236.86-6.46-60.86-102.38-6.62-303.25,126.22-320.18,33.52-4.27,81.53,4.19,108.76,25.19,30.63,23.63,35.5,83.46,68.1,91.9,78.9,20.42,227.63-48.9,191.1,102.87Z"/>
+    </svg>
+  </div>
+
+  <div id="plasmaCard" style="position:fixed;bottom:216px;right:0;width:200px;background:#0a0a0a;border:1px solid rgba(255,45,155,0.3);z-index:5;">
+    <div class="bottom-titlebar" style="border-radius:0;">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <i class="ph ph-minus" style="font-size:12px;color:#ff2d9b;cursor:default;"></i>
+        <i class="ph ph-x" style="font-size:12px;color:#ff2d9b;cursor:pointer;"></i>
+      </div>
+      <span>Video</span>
+    </div>
+    <div style="aspect-ratio:4/5;position:relative;overflow:hidden;">
+      <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center bottom;display:block;">
+        <source src="Finger%20Touching%20Plasma%20Ball.mp4" type="video/mp4">
+      </video>
+      <div style="position:absolute;inset:0;background-image:radial-gradient(circle,rgba(0,0,0,0.85) 1px,transparent 1px);background-size:4px 4px;pointer-events:none;"></div>
+    </div>
+  </div>
+
+  <div id="imageCard" style="position:fixed;bottom:108px;left:0;width:200px;background:#0a0a0a;border:1px solid rgba(255,45,155,0.3);z-index:5;">
+    <div class="bottom-titlebar" style="border-radius:0;">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <i class="ph ph-minus" style="font-size:12px;color:#ff2d9b;cursor:default;"></i>
+        <i class="ph ph-x" style="font-size:12px;color:#ff2d9b;cursor:pointer;"></i>
+      </div>
+      <span>Image</span>
+    </div>
+    <div style="aspect-ratio:4/5;position:relative;overflow:hidden;">
+      <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;">
+        <source src="Science%20Video%201080p.mp4" type="video/mp4">
+      </video>
+      <div style="position:absolute;inset:0;background-image:radial-gradient(circle,rgba(0,0,0,0.85) 1px,transparent 1px);background-size:4px 4px;pointer-events:none;"></div>
+    </div>
+  </div>
+
+  <div class="bottom-left">
+    <div class="bottom-titlebar">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <i class="ph ph-minus" style="font-size:12px;color:#ff2d9b;cursor:default;"></i>
+        <i class="ph ph-x" style="font-size:12px;color:#ff2d9b;cursor:pointer;"></i>
+      </div>
+      <span>About</span>
+    </div>
+    <div style="aspect-ratio:4/3;overflow:hidden;background:radial-gradient(ellipse at 50% 55%, #5c0a0a 0%, #111 65%);border-bottom:1px solid rgba(255,45,155,0.15);">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 268 201" style="width:100%;height:100%;display:block;">
+        <defs>
+          <pattern id="venn-dots" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="0.6" fill="rgba(255,45,155,0.07)"/>
+          </pattern>
+        </defs>
+
+        <rect width="268" height="201" fill="url(#venn-dots)"/>
+
+        <!-- top: Marketing Expertise -->
+        <circle cx="134" cy="70" r="55" fill="none" stroke="#ff2d9b" stroke-width="1.5"/>
+        <!-- bottom left: Operational Infrastructure -->
+        <circle cx="86" cy="138" r="55" fill="none" stroke="#ff2d9b" stroke-width="1.5"/>
+        <!-- bottom right: Capital Strategy -->
+        <circle cx="182" cy="138" r="55" fill="none" stroke="#ff2d9b" stroke-width="1.5"/>
+
+
+        <!-- intersection dots: where each pair of circles crosses -->
+        <!-- top ∩ bottom-left -->
+        <circle cx="81"  cy="83"  r="1.5" fill="rgba(255,45,155,0.6)"/>
+        <circle cx="139" cy="125" r="1.5" fill="rgba(255,45,155,0.6)"/>
+        <!-- top ∩ bottom-right -->
+        <circle cx="187" cy="83"  r="1.5" fill="rgba(255,45,155,0.6)"/>
+        <circle cx="129" cy="125" r="1.5" fill="rgba(255,45,155,0.6)"/>
+        <!-- bottom-left ∩ bottom-right -->
+        <circle cx="134" cy="111" r="1.5" fill="rgba(255,45,155,0.6)"/>
+        <circle cx="134" cy="165" r="1.5" fill="rgba(255,45,155,0.6)"/>
+
+        <!-- top label: centered on circle (134, 70) -->
+        <text x="134" y="66" text-anchor="middle" font-family="'DIN Alternate','DIN Condensed','Arial Narrow',Arial,sans-serif" font-size="6" font-weight="900" letter-spacing="1.8" fill="#ff2d9b">MARKETING</text>
+        <text x="134" y="75" text-anchor="middle" font-family="'DIN Alternate','DIN Condensed','Arial Narrow',Arial,sans-serif" font-size="6" font-weight="900" letter-spacing="1.8" fill="#ff2d9b">EXPERTISE</text>
+
+        <!-- bottom left label: centered on circle (86, 138) -->
+        <text x="86" y="134" text-anchor="middle" font-family="'DIN Alternate','DIN Condensed','Arial Narrow',Arial,sans-serif" font-size="6" font-weight="900" letter-spacing="1.5" fill="#ff2d9b">OPERATIONAL</text>
+        <text x="86" y="143" text-anchor="middle" font-family="'DIN Alternate','DIN Condensed','Arial Narrow',Arial,sans-serif" font-size="6" font-weight="900" letter-spacing="1.5" fill="#ff2d9b">INFRASTRUCTURE</text>
+
+        <!-- bottom right label: centered on circle (182, 138) -->
+        <text x="182" y="134" text-anchor="middle" font-family="'DIN Alternate','DIN Condensed','Arial Narrow',Arial,sans-serif" font-size="6" font-weight="900" letter-spacing="1.5" fill="#ff2d9b">CAPITAL</text>
+        <text x="182" y="143" text-anchor="middle" font-family="'DIN Alternate','DIN Condensed','Arial Narrow',Arial,sans-serif" font-size="6" font-weight="900" letter-spacing="1.5" fill="#ff2d9b">STRATEGY</text>
+
+      </svg>
+    </div>
+    <p>Soft Science combines marketing expertise, operational infrastructure, and capital strategy to turn cultural instinct into category-defining brands.</p>
+  </div>
+
+  <div class="idea-drawer" id="applyDrawer">
+    <div class="mac-titlebar">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <i class="ph ph-minus" style="font-size:12px;color:#ff2d9b;cursor:default;"></i>
+        <i class="ph ph-x" style="font-size:12px;color:#ff2d9b;cursor:pointer;" onclick="closeDrawers();"></i>
+      </div>
+      <div class="mac-title">The Ideal Founder</div>
+    </div>
+    <div class="mac-content">
+      <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(255,45,155,0.2);">
+        <div style="font-family:'DIN Alternate','DIN Condensed','Arial Narrow',Arial,sans-serif;font-size:11px;font-weight:900;letter-spacing:0.02em;color:#ff2d9b;line-height:1.25;margin-bottom:8px;">You understand marketing. That changes everything.</div>
+        <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;font-weight:400;font-style:italic;color:rgba(255,45,155,0.55);line-height:1.5;">Not a creative. Not a technologist. Someone who understands why things spread and has the obsession to build around it.</div>
+      </div>
+      <div class="col-label" style="border-bottom:none;padding-bottom:6px;margin-bottom:4px;">You Are</div>
+      <div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(255,45,155,0.2);">
+        <div style="display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px solid rgba(255,45,155,0.1);"><span style="color:#ff2d9b;font-size:8px;flex-shrink:0;margin-top:2px;">■</span><span style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;color:rgba(255,45,155,0.75);line-height:1.4;">Understands why people buy, not just what to sell</span></div>
+        <div style="display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px solid rgba(255,45,155,0.1);"><span style="color:#ff2d9b;font-size:8px;flex-shrink:0;margin-top:2px;">■</span><span style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;color:rgba(255,45,155,0.75);line-height:1.4;">Obsessive about a specific community, category, or cultural gap</span></div>
+        <div style="display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px solid rgba(255,45,155,0.1);"><span style="color:#ff2d9b;font-size:8px;flex-shrink:0;margin-top:2px;">■</span><span style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;color:rgba(255,45,155,0.75);line-height:1.4;">Thinks in brand, not just product</span></div>
+        <div style="display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px solid rgba(255,45,155,0.1);"><span style="color:#ff2d9b;font-size:8px;flex-shrink:0;margin-top:2px;">■</span><span style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;color:rgba(255,45,155,0.75);line-height:1.4;">Has a genuine point of view and the conviction to defend it</span></div>
+        <div style="display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px solid rgba(255,45,155,0.1);"><span style="color:#ff2d9b;font-size:8px;flex-shrink:0;margin-top:2px;">■</span><span style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;color:rgba(255,45,155,0.75);line-height:1.4;">Tired of building value for someone else's company</span></div>
+        <div style="display:flex;gap:8px;align-items:flex-start;padding:5px 0;"><span style="color:#ff2d9b;font-size:8px;flex-shrink:0;margin-top:2px;">■</span><span style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;color:rgba(255,45,155,0.75);line-height:1.4;">Coachable enough to learn, confident enough to lead</span></div>
+      </div>
+      <div class="col-label" style="border-bottom:none;padding-bottom:6px;margin-bottom:4px;">Apply</div>
+      <form id="applyForm">
+        <div class="apply-field">
+          <label>Your Name</label>
+          <input type="text" name="name" placeholder="Full name">
+        </div>
+        <div class="apply-field">
+          <label>What You're Building</label>
+          <textarea name="message" rows="3" placeholder="The community, category, or idea you can't stop thinking about"></textarea>
+        </div>
+        <div class="apply-field">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="you@example.com">
+        </div>
+        <button type="submit" class="apply-submit">Start the Conversation</button>
+      </form>
+    </div>
+    <div class="mac-resize"></div>
+  </div>
+
+  <div class="idea-drawer" id="ideaDrawer">
+    <div class="mac-titlebar">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <i class="ph ph-minus" style="font-size:12px;color:#ff2d9b;cursor:default;"></i>
+        <i class="ph ph-x" style="font-size:12px;color:#ff2d9b;cursor:pointer;" onclick="closeDrawers();"></i>
+      </div>
+      <div class="mac-title">Idea Submission</div>
+    </div>
+    <div class="mac-content drawer-body">
+      <p>We are committed to helping founders build category-defining companies.</p>
+      <p>If you are interested in working with Soft Science and represent a team at the earliest stages, please send us information about what you are building.</p>
+      <p>One of our team members will reach out if there is a potential fit. Though we can't guarantee a response to every submission, we will do our best to get back to you within a timely manner.</p>
+      <p>Any ideas, suggestions, proposals, processes, marketing plans, materials or feedback ("Submissions") you submit to Soft Science, either through this website, by email, or by any other means, will be considered non-confidential and non-proprietary.</p>
+    </div>
+    <div class="mac-resize"></div>
+  </div>
+
+  <div class="idea-drawer" id="privacyDrawer" style="width:320px;">
+    <div class="mac-titlebar">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <i class="ph ph-minus" style="font-size:12px;color:#ff2d9b;cursor:default;"></i>
+        <i class="ph ph-x" style="font-size:12px;color:#ff2d9b;cursor:pointer;" onclick="closeDrawers();"></i>
+      </div>
+      <div class="mac-title">Privacy Policy</div>
+    </div>
+    <div class="mac-content drawer-body" style="max-height:400px;overflow-y:auto;">
+      <p style="color:rgba(255,45,155,0.4);font-size:8px;margin-bottom:12px;">Last updated: January 2025</p>
+      <p><strong>What we collect.</strong> When you submit the application form or newsletter signup on this site, we collect your name, email address, and any information you choose to include in your message. We do not use cookies, analytics trackers, or any third-party tracking scripts.</p>
+      <p><strong>How we use it.</strong> Information you submit is used solely to evaluate your application and respond to your inquiry. We will not sell, rent, or share your information with third parties for marketing purposes.</p>
+      <p><strong>Form processing.</strong> Form submissions are processed by Formspree, a third-party service. Their privacy policy governs how they handle data in transit. We retain your submission only as long as necessary to evaluate your inquiry.</p>
+      <p><strong>Email.</strong> If you sign up for updates, you may receive occasional communications from Soft Science. You can opt out at any time by replying with "unsubscribe."</p>
+      <p><strong>Contact.</strong> Questions about this policy can be directed to hello@soft-science.co.</p>
+    </div>
+    <div class="mac-resize"></div>
+  </div>
+
+  <div class="idea-drawer" id="termsDrawer" style="width:320px;">
+    <div class="mac-titlebar">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <i class="ph ph-minus" style="font-size:12px;color:#ff2d9b;cursor:default;"></i>
+        <i class="ph ph-x" style="font-size:12px;color:#ff2d9b;cursor:pointer;" onclick="closeDrawers();"></i>
+      </div>
+      <div class="mac-title">Terms of Use</div>
+    </div>
+    <div class="mac-content drawer-body" style="max-height:400px;overflow-y:auto;">
+      <p style="color:rgba(255,45,155,0.4);font-size:8px;margin-bottom:12px;">Last updated: January 2025</p>
+      <p><strong>Access.</strong> This site is provided for informational purposes. By accessing it, you agree to these terms. If you disagree, please do not use the site.</p>
+      <p><strong>Intellectual property.</strong> All content on this site, including copy, design, and code, is the property of Soft Science and may not be reproduced without written permission.</p>
+      <p><strong>Submissions.</strong> Any ideas, proposals, materials, or feedback you submit through this site are considered non-confidential and non-proprietary. Soft Science is free to use such submissions without restriction or compensation.</p>
+      <p><strong>No warranties.</strong> This site is provided "as is." Soft Science makes no representations regarding accuracy, completeness, or fitness for any particular purpose.</p>
+      <p><strong>Limitation of liability.</strong> Soft Science is not liable for any damages arising from your use of, or inability to use, this site.</p>
+      <p><strong>Governing law.</strong> These terms are governed by the laws of the State of California, without regard to conflict of law principles.</p>
+      <p><strong>Changes.</strong> We may update these terms at any time. Continued use of the site constitutes acceptance of any revised terms.</p>
+    </div>
+    <div class="mac-resize"></div>
+  </div>
+
+  <div class="bottom">
+    <div class="bottom-titlebar">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <i class="ph ph-minus" style="font-size:12px;color:#ff2d9b;cursor:default;"></i>
+        <i class="ph ph-x" style="font-size:12px;color:#ff2d9b;cursor:pointer;"></i>
+      </div>
+      <span>Ventures</span>
+    </div>
+    <div class="grid">
+      <div class="col">
+        <div class="col-label">Ventures</div>
+        <a href="https://super-conscious.studio/" target="_blank" class="col-item" style="display:flex;align-items:center;justify-content:space-between;"><span>Super-Conscious</span><i class="ph ph-arrow-up-right" style="font-size:12px;flex-shrink:0;"></i></a>
+        <a href="https://big-buoy.com/" target="_blank" class="col-item" style="display:flex;align-items:center;justify-content:space-between;"><span>Big Buoy</span><i class="ph ph-arrow-up-right" style="font-size:12px;flex-shrink:0;"></i></a>
+        <a href="#" class="col-item cta" onclick="event.preventDefault();openDrawer('applyDrawer');">Apply to co-found →</a>
+      </div>
+      <div class="col">
+        <div class="col-label">Connect</div>
+        <a href="https://x.com/softscience" target="_blank" class="col-item" style="display:flex;align-items:center;gap:10px;"><i class="ph ph-x-logo" style="font-size:12px;flex-shrink:0;"></i>Follow on X</a>
+        <a href="mailto:hello@softscience.co" class="col-item" style="display:flex;align-items:center;gap:10px;"><i class="ph ph-envelope" style="font-size:12px;flex-shrink:0;"></i>Email us</a>
+        <a href="#" class="col-item" style="display:flex;align-items:center;gap:10px;" onclick="event.preventDefault();openDrawer('ideaDrawer');"><i class="ph ph-paper-plane-tilt" style="font-size:12px;flex-shrink:0;"></i>Submit an idea</a>
+      </div>
+      <div class="col">
+        <div class="col-label">Newsletter</div>
+        <div class="email-wrap" id="newsletterWrap">
+          <input type="email" id="newsletterInput" placeholder="Your email">
+          <button type="button" id="newsletterBtn"><i class="ph ph-arrow-right" style="font-size:14px;"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="clock">
+    <span class="clock-label">Local Time</span>
+    <span class="clock-time"><span id="clock-hms"></span><span class="clock-ms"><span id="clock-ms"></span></span></span>
+  </div>
+
+  <script>
+    (function tickClock() {
+      const now = new Date();
+      const h  = String(now.getHours()).padStart(2, '0');
+      const m  = String(now.getMinutes()).padStart(2, '0');
+      const s  = String(now.getSeconds()).padStart(2, '0');
+      const ms = String(now.getMilliseconds()).padStart(3, '0');
+      document.getElementById('clock-hms').textContent = h + ':' + m + ':' + s + '.';
+      document.getElementById('clock-ms').textContent  = ms;
+      requestAnimationFrame(tickClock);
+    })();
+
+    let topZ = 10;
+
+    function makeDraggable(el, handle) {
+      handle.style.cursor = 'grab';
+
+      handle.addEventListener('mousedown', function(e) {
+        if (e.target.tagName === 'I') return;
+        e.preventDefault();
+
+        topZ++;
+        el.style.zIndex = topZ;
+
+        // Pin to top/left so delta math is consistent
+        const rect = el.getBoundingClientRect();
+        el.style.left   = rect.left + 'px';
+        el.style.top    = rect.top  + 'px';
+        el.style.right  = 'auto';
+        el.style.bottom = 'auto';
+        el.style.transform = 'none';
+        el.dataset.dragged = 'true';
+
+        let lastX = e.clientX;
+        let lastY = e.clientY;
+        handle.style.cursor = 'grabbing';
+        document.body.style.userSelect = 'none';
+
+        function onMove(e) {
+          el.style.left = (parseFloat(el.style.left) + e.clientX - lastX) + 'px';
+          el.style.top  = (parseFloat(el.style.top)  + e.clientY - lastY) + 'px';
+          lastX = e.clientX;
+          lastY = e.clientY;
+        }
+
+        function onUp() {
+          handle.style.cursor = 'grab';
+          document.body.style.userSelect = '';
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onUp);
+        }
+
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+    }
+
+    function resetDrawer(el) {
+      el.style.position = '';
+      el.style.left = '';
+      el.style.top  = '';
+      el.style.right  = '';
+      el.style.bottom = '';
+      el.style.transform = '';
+      el.style.opacity = '';
+      el.style.zIndex = '';
+      el.dataset.dragged = '';
+    }
+
+    function closeDrawers() {
+      ['applyDrawer', 'ideaDrawer', 'privacyDrawer', 'termsDrawer'].forEach(function(id) {
+        const el = document.getElementById(id);
+        el.classList.remove('open');
+        resetDrawer(el);
+      });
+    }
+
+    function openDrawer(id) {
+      closeDrawers();
+      const el = document.getElementById(id);
+      resetDrawer(el);
+      topZ++;
+      el.style.zIndex = topZ;
+      el.classList.add('open');
+    }
+
+    window.addEventListener('DOMContentLoaded', function() {
+
+      // Minimize
+      document.querySelectorAll('.ph-minus').forEach(function(icon) {
+        icon.style.cursor = 'pointer';
+        icon.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const win = icon.closest('.bottom, .bottom-left, .idea-drawer, #imageCard, #plasmaCard');
+          if (win) win.classList.toggle('minimized');
+        });
+      });
+
+      // X button — close main windows (all screen sizes)
+      document.querySelectorAll('.ph-x').forEach(function(icon) {
+        var win = icon.closest('.bottom, .bottom-left, #imageCard, #plasmaCard');
+        if (!win) return;
+        icon.addEventListener('click', function(e) {
+          e.stopPropagation();
+          win.classList.add('window-closed');
+        });
+      });
+
+      // Newsletter submit
+      var newsletterBtn   = document.getElementById('newsletterBtn');
+      var newsletterInput = document.getElementById('newsletterInput');
+      var newsletterWrap  = document.getElementById('newsletterWrap');
+      if (newsletterBtn) {
+        newsletterBtn.addEventListener('click', function() {
+          var email = (newsletterInput ? newsletterInput.value : '').trim();
+          if (!email || !email.includes('@')) {
+            newsletterInput.focus();
+            return;
+          }
+          newsletterWrap.innerHTML = '<span style="font-family:\'DIN Alternate\',\'DIN Condensed\',\'Arial Narrow\',Arial,sans-serif;font-size:10px;font-weight:900;letter-spacing:0.1em;color:#ff2d9b;">You\'re in. Watch this space.</span>';
+          fetch('https://formspree.io/f/xzdobjza', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ email: email, _subject: 'Newsletter signup' })
+          }).catch(function() {});
+        });
+      }
+
+      // Apply form — Formspree submit
+      var applyForm = document.getElementById('applyForm');
+      if (applyForm) {
+        applyForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          var name    = applyForm.querySelector('[name="name"]').value.trim();
+          var message = applyForm.querySelector('[name="message"]').value.trim();
+          var email   = applyForm.querySelector('[name="email"]').value.trim();
+          if (!name || !email) return;
+          var btn = applyForm.querySelector('.apply-submit');
+          btn.textContent = 'Sending…';
+          btn.disabled = true;
+          fetch('https://formspree.io/f/xzdobjza', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ name: name, message: message, email: email, _subject: 'Apply to co-found — ' + name })
+          })
+          .then(function(res) {
+            if (res.ok) {
+              applyForm.innerHTML = '<div style="padding:16px 0;font-family:\'DIN Alternate\',\'DIN Condensed\',\'Arial Narrow\',Arial,sans-serif;font-size:11px;font-weight:900;letter-spacing:0.05em;color:#ff2d9b;line-height:1.6;">We got it.<br><span style="font-weight:400;font-style:italic;color:rgba(255,45,155,0.6);font-size:9px;">We\'ll be in touch if there\'s a fit.</span></div>';
+            } else {
+              btn.textContent = 'Try again';
+              btn.disabled = false;
+            }
+          })
+          .catch(function() {
+            btn.textContent = 'Try again';
+            btn.disabled = false;
+          });
+        });
+      }
+
+      // Mobile guard — skip disperse/drag on small screens
+      if (window.innerWidth <= 768) return;
+
+      // Random disperse — avoid the centered logo area
+      const logoW = 320, logoH = 120;
+      const logoX1 = window.innerWidth  / 2 - logoW / 2;
+      const logoX2 = window.innerWidth  / 2 + logoW / 2;
+      const logoY1 = window.innerHeight / 2 - logoH / 2;
+      const logoY2 = window.innerHeight / 2 + logoH / 2;
+
+      const placed = [];
+
+      function overlaps(ax, ay, aw, ah, bx, by, bw, bh, pad) {
+        pad = pad || 0;
+        return ax < bx + bw + pad && ax + aw + pad > bx &&
+               ay < by + bh + pad && ay + ah + pad > by;
+      }
+
+      function disperseEl(el) {
+        const rect = el.getBoundingClientRect();
+        const w = rect.width, h = rect.height;
+        const maxX = window.innerWidth  - w - 16;
+        const maxY = window.innerHeight - h - 16;
+        let x, y, tries = 0, valid;
+        do {
+          x = 16 + Math.random() * (maxX - 16);
+          y = 16 + Math.random() * (maxY - 16);
+          valid = !overlaps(x, y, w, h, logoX1, logoY1, logoW, logoH, 0);
+          if (valid) {
+            for (var i = 0; i < placed.length; i++) {
+              if (overlaps(x, y, w, h, placed[i].x, placed[i].y, placed[i].w, placed[i].h, 20)) {
+                valid = false;
+                break;
+              }
+            }
+          }
+          tries++;
+        } while (!valid && tries < 100);
+        el.style.left   = x + 'px';
+        el.style.top    = y + 'px';
+        el.style.right  = 'auto';
+        el.style.bottom = 'auto';
+        placed.push({ x: x, y: y, w: w, h: h, el: el });
+      }
+
+      [document.querySelector('.bottom'), document.querySelector('.bottom-left'), document.getElementById('imageCard'), document.getElementById('plasmaCard')]
+        .forEach(disperseEl);
+
+      // Force one image card to partially overlap another window
+      var imageIds = ['imageCard', 'plasmaCard'];
+      var imagePlaced = placed.filter(function(p) { return imageIds.indexOf(p.el.id) !== -1; });
+      var otherPlaced = placed.filter(function(p) { return imageIds.indexOf(p.el.id) === -1; });
+
+      if (imagePlaced.length && otherPlaced.length) {
+        var chosen = imagePlaced[Math.floor(Math.random() * imagePlaced.length)];
+        var target = otherPlaced[Math.floor(Math.random() * otherPlaced.length)];
+
+        var edgeOverlapX = 40 + Math.random() * 40;
+        var edgeOverlapY = 40 + Math.random() * 40;
+        var corners = [
+          { x: target.x + target.w - edgeOverlapX,  y: target.y + target.h - edgeOverlapY  },
+          { x: target.x - chosen.w  + edgeOverlapX,  y: target.y + target.h - edgeOverlapY  },
+          { x: target.x + target.w - edgeOverlapX,  y: target.y - chosen.h  + edgeOverlapY  },
+          { x: target.x - chosen.w  + edgeOverlapX,  y: target.y - chosen.h  + edgeOverlapY  }
+        ];
+        var corner = corners[Math.floor(Math.random() * corners.length)];
+        var ox = Math.max(16, Math.min(corner.x, window.innerWidth  - chosen.w - 16));
+        var oy = Math.max(16, Math.min(corner.y, window.innerHeight - chosen.h - 16));
+        chosen.el.style.left = ox + 'px';
+        chosen.el.style.top  = oy + 'px';
+        topZ++;
+        chosen.el.style.zIndex = topZ;
+      }
+
+      // Draggable
+      makeDraggable(document.querySelector('.bottom'),      document.querySelector('.bottom .bottom-titlebar'));
+      makeDraggable(document.querySelector('.bottom-left'), document.querySelector('.bottom-left .bottom-titlebar'));
+      makeDraggable(document.getElementById('imageCard'),   document.querySelector('#imageCard .bottom-titlebar'));
+      makeDraggable(document.getElementById('plasmaCard'),  document.querySelector('#plasmaCard .bottom-titlebar'));
+      makeDraggable(document.getElementById('applyDrawer'),  document.querySelector('#applyDrawer .mac-titlebar'));
+      makeDraggable(document.getElementById('ideaDrawer'),   document.querySelector('#ideaDrawer .mac-titlebar'));
+      makeDraggable(document.getElementById('privacyDrawer'), document.querySelector('#privacyDrawer .mac-titlebar'));
+      makeDraggable(document.getElementById('termsDrawer'),   document.querySelector('#termsDrawer .mac-titlebar'));
+    });
+  </script>
+</body>
+</html>
