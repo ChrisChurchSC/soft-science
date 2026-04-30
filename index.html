@@ -3,7 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Soft Science</title>
+  <title>Soft Science — A Venture Studio Built on Marketing</title>
+  <meta name="description" content="Soft Science co-founds consumer brands with marketing-minded operators. We provide the team, network, capital strategy, and marketing expertise. Founders bring the vision.">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Soft Science?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Soft Science is a venture studio that co-founds consumer brands with marketing-minded operators. We provide the team, network, capital strategy, and marketing expertise — founders bring the vision, obsession, and point of view."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a venture studio?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A venture studio builds startups from the inside — providing operational support, capital strategy, and expertise rather than just funding. Unlike traditional investors, Soft Science works alongside founders to build the brand from day one."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Who is the ideal Soft Science founder?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Someone who understands why things spread — not just a creative or technologist, but a person with genuine cultural instinct, obsession with a specific community or category, and the conviction to build a brand around it. Someone who is tired of building value for someone else's company."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does Soft Science provide to founders?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Soft Science provides the team, network, capital strategy, and marketing expertise. Founders bring the vision, obsession, and point of view. Together we build category-defining consumer brands."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need a deck or business plan to apply?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No deck required. We ask for three things: your name, a description of the community or category you can't stop thinking about, and your email. If there's a potential fit, we'll reach out."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What stage does Soft Science work with founders?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We work at the earliest stages — before product-market fit, before the deck is polished, before the brand exists. The earlier the better. We co-found."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is Soft Science different from a traditional investor?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Most investors write a check and wait. We hand you a marketing team. An active operating team, a decade of brand-building infrastructure, and the expertise to make things spread — all there before you make your first hire."
+        }
+      }
+    ]
+  }
+  </script>
   <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -291,7 +356,11 @@
 
     .apply-submit:hover { opacity: 0.85; }
 
-    .minimized > *:not(.bottom-titlebar):not(.mac-titlebar) { display: none; }
+    .minimized > *:not(.bottom-titlebar):not(.mac-titlebar):not(#faqTab) { display: none; }
+    #faqWindow:not(.minimized) #faqToggleIcon::before { content: '↓'; }
+    #faqWindow.minimized #faqToggleIcon::before { content: '↑'; }
+    #faqToggleIcon { font-size: 0; }
+    #faqToggleIcon::before { font-size: 13px; color: #ff2d9b; }
     .window-closed { display: none !important; }
 
     #clock {
@@ -548,6 +617,46 @@
     <div class="mac-resize"></div>
   </div>
 
+  <div id="faqWindow" class="minimized" style="position:fixed;bottom:0;left:0;width:240px;background:#0a0a0a;border-top:2px solid #ff2d9b;border-right:1px solid rgba(255,45,155,0.2);z-index:10;">
+    <div id="faqTab" onclick="document.getElementById('faqWindow').classList.toggle('minimized');" style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;cursor:pointer;user-select:none;">
+      <span style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#ff2d9b;">FAQ</span>
+      <span id="faqToggleIcon" style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;line-height:1;"></span>
+    </div>
+    <div style="padding:12px 14px;max-height:320px;overflow-y:auto;">
+
+      <div style="padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid rgba(255,45,155,0.15);">
+        <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:0.08em;color:#ff2d9b;margin-bottom:4px;">What is Soft Science?</div>
+        <p style="margin:0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;color:rgba(255,45,155,0.65);line-height:1.5;">A venture studio that co-founds consumer brands with marketing-minded operators. We provide the team, network, capital strategy, and marketing expertise. Founders bring the vision.</p>
+      </div>
+
+      <div style="padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid rgba(255,45,155,0.15);">
+        <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:0.08em;color:#ff2d9b;margin-bottom:4px;">What is a venture studio?</div>
+        <p style="margin:0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;color:rgba(255,45,155,0.65);line-height:1.5;">A company that builds startups from the inside — providing operational support, capital strategy, and expertise rather than just funding. We work alongside founders from day one.</p>
+      </div>
+
+      <div style="padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid rgba(255,45,155,0.15);">
+        <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:0.08em;color:#ff2d9b;margin-bottom:4px;">Who is the ideal founder?</div>
+        <p style="margin:0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;color:rgba(255,45,155,0.65);line-height:1.5;">Someone who understands why things spread. Not a creative. Not a technologist. A person with genuine cultural instinct, obsession with a specific community or category, and the conviction to build around it.</p>
+      </div>
+
+      <div style="padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid rgba(255,45,155,0.15);">
+        <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:0.08em;color:#ff2d9b;margin-bottom:4px;">Do I need a deck to apply?</div>
+        <p style="margin:0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;color:rgba(255,45,155,0.65);line-height:1.5;">No. We ask for three things: your name, what community or category you can't stop thinking about, and your email. That's it.</p>
+      </div>
+
+      <div style="padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid rgba(255,45,155,0.15);">
+        <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:0.08em;color:#ff2d9b;margin-bottom:4px;">What stage do you work with founders?</div>
+        <p style="margin:0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;color:rgba(255,45,155,0.65);line-height:1.5;">The earliest stages — before product-market fit, before the deck is polished, before the brand exists. We co-found.</p>
+      </div>
+
+      <div style="padding-bottom:4px;">
+        <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:0.08em;color:#ff2d9b;margin-bottom:4px;">How is this different from a traditional investor?</div>
+        <p style="margin:0;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9px;color:rgba(255,45,155,0.65);line-height:1.5;">Most investors write a check and wait. We hand you a marketing team. An active operating team, a decade of brand-building infrastructure, and the expertise to make things spread — all there before you make your first hire.</p>
+      </div>
+
+    </div>
+  </div>
+
   <div class="bottom">
     <div class="bottom-titlebar">
       <div style="display:flex;gap:8px;align-items:center;">
@@ -565,7 +674,7 @@
       </div>
       <div class="col">
         <div class="col-label">Connect</div>
-        <a href="https://x.com/softscience" target="_blank" class="col-item" style="display:flex;align-items:center;gap:10px;"><i class="ph ph-x-logo" style="font-size:12px;flex-shrink:0;"></i>Follow on X</a>
+        <a href="https://instagram.com/softscience" target="_blank" class="col-item" style="display:flex;align-items:center;gap:10px;"><i class="ph ph-instagram-logo" style="font-size:12px;flex-shrink:0;"></i>Follow on Instagram</a>
         <a href="mailto:hello@softscience.co" class="col-item" style="display:flex;align-items:center;gap:10px;"><i class="ph ph-envelope" style="font-size:12px;flex-shrink:0;"></i>Email us</a>
         <a href="#" class="col-item" style="display:flex;align-items:center;gap:10px;" onclick="event.preventDefault();openDrawer('ideaDrawer');"><i class="ph ph-paper-plane-tilt" style="font-size:12px;flex-shrink:0;"></i>Submit an idea</a>
       </div>
