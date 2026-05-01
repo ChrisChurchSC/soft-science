@@ -1133,9 +1133,13 @@
           vy: Math.sin(angle) * speed
         };
       });
-      function tick() {
+      var lastT = null;
+      function tick(ts) {
+        if (!lastT) lastT = ts;
+        var dt = Math.min((ts - lastT) / 16.667, 3);
+        lastT = ts;
         balls.forEach(function(b) {
-          b.x += b.vx; b.y += b.vy;
+          b.x += b.vx * dt; b.y += b.vy * dt;
           if (b.x - r <= 0)                 { b.x = r;                        b.vx =  Math.abs(b.vx); }
           if (b.x + r >= window.innerWidth) { b.x = window.innerWidth  - r;   b.vx = -Math.abs(b.vx); }
           if (b.y - r <= 0)                 { b.y = r;                        b.vy =  Math.abs(b.vy); }
@@ -1145,7 +1149,7 @@
         });
         requestAnimationFrame(tick);
       }
-      tick();
+      requestAnimationFrame(tick);
     })();
   </script>
   <div id="titleTooltip"></div>
