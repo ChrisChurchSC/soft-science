@@ -149,6 +149,35 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: rgba(255,45,155,0.45);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+      padding-left: 16px;
+      position: relative;
+    }
+    .bottom-titlebar span[data-tooltip]::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      right: 0;
+      background: #111;
+      border: 1px solid rgba(255,45,155,0.3);
+      color: #ff2d9b;
+      font-size: 8px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      transition-delay: 0s;
+      z-index: 100;
+    }
+    .bottom-titlebar span[data-tooltip]:hover::after {
+      opacity: 1;
+      transition-delay: 0.7s;
     }
 
     .grid { display: flex; flex-direction: column; }
@@ -249,7 +278,7 @@
       position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%) scale(0.96);
       width: 268px;
       background: #0a0a0a;
       border: 1px solid rgba(255,45,155,0.3);
@@ -265,6 +294,7 @@
     .idea-drawer.open {
       opacity: 1;
       pointer-events: all;
+      transform: translate(-50%, -50%) scale(1);
     }
 
     .mac-titlebar {
@@ -370,6 +400,66 @@
     #faqToggleIcon::before { font-size: 13px; color: #ff2d9b; }
     .window-closed { display: none !important; }
 
+    /* ── Animations ── */
+    @keyframes windowIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes illoFloat {
+      0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+      50%       { transform: translate(-50%, -50%) translateY(-8px); }
+    }
+
+    /* Window entrances — staggered */
+    .bottom-left  { animation: windowIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.15s both; }
+    .bottom       { animation: windowIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.28s both; }
+    #imageCard    { animation: windowIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.41s both; }
+    #plasmaCard   { animation: windowIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.54s both; }
+    #faqWindow    { animation: fadeIn 0.5s ease 0.65s both; }
+    .logo-wrap    { animation: fadeIn 0.7s ease 0.1s both; }
+    .legal-top    { animation: fadeIn 0.5s ease 0.5s both; }
+    .corner-logo  { animation: fadeIn 0.5s ease 0.7s both; }
+
+    /* Illustration gentle float */
+    .illo-wrap { animation: illoFloat 8s ease-in-out infinite; }
+
+    /* Hover transitions */
+    .col-item        { transition: opacity 0.15s ease; }
+    .email-wrap button { transition: opacity 0.15s ease; }
+    .legal-top a     { transition: color 0.15s ease; }
+    .apply-submit    { transition: opacity 0.15s ease; }
+    .bottom-titlebar .ph-x,
+    .bottom-titlebar .ph-minus { transition: opacity 0.15s ease; }
+    .ph-x:hover      { opacity: 0.5; }
+
+    /* Drawer popup — scale in */
+    .idea-drawer {
+      transform-origin: center center;
+      transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.22,1,0.36,1);
+      transform: translate(-50%, -50%) scale(0.96);
+    }
+    .idea-drawer.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* FAQ smooth expand */
+    #faqWindow > div:not(#faqTab) {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.22,1,0.36,1);
+    }
+    #faqWindow:not(.minimized) > div:not(#faqTab) {
+      max-height: 360px;
+    }
+    #faqTab { transition: background 0.15s ease; }
+    #faqTab:hover { background: rgba(255,45,155,0.06); }
+
     #clock {
       position: fixed;
       bottom: 16px;
@@ -430,7 +520,7 @@
     <a href="#" onclick="event.preventDefault();openDrawer('termsDrawer');">Terms of Use</a>
   </div>
 
-  <div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1;pointer-events:none;">
+  <div class="illo-wrap" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1;pointer-events:none;">
     <img src="sodtscience_illo_01.png" width="320" height="320" style="display:block;mix-blend-mode:multiply;opacity:0.55;">
   </div>
   <div class="logo-wrap">
@@ -445,7 +535,7 @@
         <i class="ph ph-minus" style="font-size:12px;color:#ff2d9b;cursor:default;"></i>
         <i class="ph ph-x" style="font-size:12px;color:#ff2d9b;cursor:pointer;"></i>
       </div>
-      <span>Video</span>
+      <span>User Testing</span>
     </div>
     <div style="aspect-ratio:4/5;position:relative;overflow:hidden;">
       <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center bottom;display:block;">
@@ -461,7 +551,7 @@
         <i class="ph ph-minus" style="font-size:12px;color:#ff2d9b;cursor:default;"></i>
         <i class="ph ph-x" style="font-size:12px;color:#ff2d9b;cursor:pointer;"></i>
       </div>
-      <span>Image</span>
+      <span>market-research_final_final2</span>
     </div>
     <div style="aspect-ratio:4/5;position:relative;overflow:hidden;">
       <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;">
@@ -806,6 +896,11 @@
           e.stopPropagation();
           win.classList.add('window-closed');
         });
+      });
+
+      // Tooltip on truncated window titles
+      document.querySelectorAll('.bottom-titlebar span').forEach(function(span) {
+        span.setAttribute('data-tooltip', span.textContent.trim());
       });
 
       // Newsletter submit
