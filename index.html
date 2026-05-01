@@ -522,11 +522,12 @@
         padding-bottom: 80px;
       }
       .legal-top { order: 1; position: relative; top: auto; left: auto; padding: 20px 16px 0; }
-      .logo-wrap  { order: 2; position: relative; top: auto; left: auto; transform: none; width: 70%; margin: 32px auto 28px; }
-      .bottom-left { order: 3; position: relative !important; left: auto !important; top: auto !important; right: auto !important; bottom: auto !important; transform: none !important; width: calc(100% - 48px) !important; max-width: 300px !important; margin: 0 auto !important; }
-      #imageCard, #plasmaCard { order: 4; position: relative !important; left: auto !important; top: auto !important; right: auto !important; bottom: auto !important; transform: none !important; width: calc(100% - 48px) !important; max-width: 300px !important; margin: 0 auto !important; }
-      .bottom { order: 5; position: relative !important; left: auto !important; top: auto !important; right: auto !important; bottom: auto !important; transform: none !important; width: calc(100% - 48px) !important; max-width: 300px !important; margin: 0 auto !important; }
-      #clock  { order: 6; position: relative; bottom: auto; right: auto; padding: 16px; align-items: flex-start; }
+      .illo-wrap  { order: 2; position: relative !important; top: auto !important; left: auto !important; transform: none !important; width: 200px; margin: 24px auto -60px; pointer-events: none; animation: none; }
+      .logo-wrap  { order: 3; position: relative; top: auto; left: auto; transform: none; width: 70%; margin: 0 auto 28px; z-index: 2; }
+      .bottom-left { order: 4; position: relative !important; left: auto !important; top: auto !important; right: auto !important; bottom: auto !important; transform: none !important; width: calc(100% - 48px) !important; max-width: 300px !important; margin: 0 auto !important; }
+      #imageCard, #plasmaCard { order: 5; position: relative !important; left: auto !important; top: auto !important; right: auto !important; bottom: auto !important; transform: none !important; width: calc(100% - 48px) !important; max-width: 300px !important; margin: 0 auto !important; }
+      .bottom { order: 6; position: relative !important; left: auto !important; top: auto !important; right: auto !important; bottom: auto !important; transform: none !important; width: calc(100% - 48px) !important; max-width: 300px !important; margin: 0 auto !important; }
+      #clock  { order: 7; position: relative; bottom: auto; right: auto; padding: 16px; align-items: flex-start; }
       #applyDrawer, #ideaDrawer { width: 92% !important; }
     }
   </style>
@@ -910,6 +911,20 @@
     window.addEventListener('DOMContentLoaded', function() {
 
       // Minimize
+      // Collapse all windows on mobile by default; tap titlebar to expand
+      if (window.innerWidth <= 768) {
+        ['.bottom', '.bottom-left', '#imageCard', '#plasmaCard'].forEach(function(sel) {
+          var el = document.querySelector(sel);
+          if (el) {
+            el.classList.add('minimized');
+            el.querySelector('.bottom-titlebar').style.cursor = 'pointer';
+            el.querySelector('.bottom-titlebar').addEventListener('click', function() {
+              el.classList.toggle('minimized');
+            });
+          }
+        });
+      }
+
       document.querySelectorAll('.ph-minus').forEach(function(icon) {
         icon.style.cursor = 'pointer';
         icon.addEventListener('click', function(e) {
