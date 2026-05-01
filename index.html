@@ -524,18 +524,19 @@
       .legal-top { order: 1; position: relative; top: auto; left: auto; padding: 20px 16px 0; }
       .illo-wrap  { order: 2; position: relative !important; top: auto !important; left: auto !important; transform: none !important; width: 200px; margin: 24px auto -60px; pointer-events: none; animation: none; }
       .logo-wrap  { order: 3; position: relative; top: auto; left: auto; transform: none; width: 70%; margin: 0 auto 28px; z-index: 2; }
-      /* Windows docked bottom-right, stacked, titlebar at bottom, content expands upward */
+      /* Windows docked bottom-right, flush grouped, titlebar at bottom, content expands upward */
       .bottom, .bottom-left, #imageCard, #plasmaCard {
         position: fixed !important; right: 0 !important; left: auto !important; top: auto !important;
         width: 220px !important; display: flex !important; flex-direction: column-reverse !important;
         transform: none !important; margin: 0 !important;
       }
-      .bottom-left  { bottom: 42px !important; }
-      #imageCard    { bottom: 78px !important; }
-      #plasmaCard   { bottom: 114px !important; }
-      .bottom       { bottom: 150px !important; }
+      .bottom-left  { bottom: 38px !important; }
+      #imageCard    { bottom: 70px !important; }
+      #plasmaCard   { bottom: 102px !important; }
+      .bottom       { bottom: 134px !important; }
       #faqWindow    { left: auto !important; right: 0 !important; width: 220px !important; border-right: none !important; border-left: 1px solid rgba(255,45,155,0.2) !important; }
-      #clock  { order: 4; position: relative; bottom: auto; right: auto; padding: 16px; align-items: flex-start; }
+      /* Clock bottom-left on mobile */
+      #clock { position: fixed !important; bottom: 12px !important; left: 12px !important; right: auto !important; align-items: flex-start !important; }
       #applyDrawer, #ideaDrawer { width: 92% !important; }
     }
   </style>
