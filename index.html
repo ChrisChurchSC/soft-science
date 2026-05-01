@@ -398,6 +398,38 @@
     .window-closed { display: none !important; }
 
     /* ── Animations ── */
+    /* ── Loader ── */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: #0a0a0a;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.4s ease;
+    }
+    #loader.fade { opacity: 0; pointer-events: none; }
+    .loader-line {
+      font-family: 'DIN Alternate','DIN Condensed','Arial Narrow',Arial,sans-serif;
+      font-weight: 900;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeIn 0.35s ease forwards;
+    }
+    .loader-line.l1 { font-size: 13px; color: rgba(255,45,155,0.9); animation-delay: 0.15s; }
+    .loader-line.l2 { font-size: 9px;  color: rgba(255,45,155,0.4); margin-top: 5px; animation-delay: 0.55s; }
+    .loader-cursor  {
+      font-family: monospace;
+      font-size: 16px;
+      color: #ff2d9b;
+      margin-top: 14px;
+      opacity: 0;
+      animation: fadeIn 0.2s ease 0.95s forwards, blink 0.7s step-start 0.95s infinite;
+    }
+    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+
     @keyframes windowIn {
       from { opacity: 0; transform: translateY(14px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -411,15 +443,15 @@
       50%       { transform: translate(-50%, -50%) translateY(-8px); }
     }
 
-    /* Window entrances — staggered */
-    .bottom-left  { animation: windowIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.15s both; }
-    .bottom       { animation: windowIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.28s both; }
-    #imageCard    { animation: windowIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.41s both; }
-    #plasmaCard   { animation: windowIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.54s both; }
-    #faqWindow    { animation: fadeIn 0.5s ease 0.65s both; }
-    .logo-wrap    { animation: fadeIn 0.7s ease 0.1s both; }
-    .legal-top    { animation: fadeIn 0.5s ease 0.5s both; }
-    .corner-logo  { animation: fadeIn 0.5s ease 0.7s both; }
+    /* Window entrances — staggered, after loader (1.9s offset) */
+    .bottom-left  { animation: windowIn 0.5s cubic-bezier(0.22,1,0.36,1) 2.05s both; }
+    .bottom       { animation: windowIn 0.5s cubic-bezier(0.22,1,0.36,1) 2.18s both; }
+    #imageCard    { animation: windowIn 0.5s cubic-bezier(0.22,1,0.36,1) 2.31s both; }
+    #plasmaCard   { animation: windowIn 0.5s cubic-bezier(0.22,1,0.36,1) 2.44s both; }
+    #faqWindow    { animation: fadeIn 0.5s ease 2.55s both; }
+    .logo-wrap    { animation: fadeIn 0.7s ease 2.0s both; }
+    .legal-top    { animation: fadeIn 0.5s ease 2.4s both; }
+    .corner-logo  { animation: fadeIn 0.5s ease 2.6s both; }
 
     /* Illustration gentle float */
     .illo-wrap { animation: illoFloat 8s ease-in-out infinite; }
@@ -511,6 +543,14 @@
   </style>
 </head>
 <body>
+
+  <div id="loader">
+    <div style="text-align:center;">
+      <div class="loader-line l1">Soft Science</div>
+      <div class="loader-line l2">Venture Studio</div>
+      <div class="loader-cursor">_</div>
+    </div>
+  </div>
 
   <div class="legal-top">
     <a href="#" onclick="event.preventDefault();openDrawer('privacyDrawer');">Privacy Policy</a>
@@ -872,6 +912,15 @@
       el.style.zIndex = topZ;
       el.classList.add('open');
     }
+
+    // Boot loader
+    (function() {
+      var loader = document.getElementById('loader');
+      setTimeout(function() {
+        loader.classList.add('fade');
+        setTimeout(function() { loader.remove(); }, 400);
+      }, 1500);
+    })();
 
     window.addEventListener('DOMContentLoaded', function() {
 
