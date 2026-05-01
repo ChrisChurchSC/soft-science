@@ -552,7 +552,11 @@
     <a href="#" onclick="event.preventDefault();openDrawer('termsDrawer');">Terms of Use</a>
   </div>
 
-  <div id="pong-dot" style="position:fixed;width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,0.4);z-index:2;pointer-events:none;"></div>
+  <div class="pong-dot" style="position:fixed;width:6px;height:6px;border-radius:50%;background:#000;z-index:2;pointer-events:none;"></div>
+  <div class="pong-dot" style="position:fixed;width:6px;height:6px;border-radius:50%;background:#000;z-index:2;pointer-events:none;"></div>
+  <div class="pong-dot" style="position:fixed;width:6px;height:6px;border-radius:50%;background:#000;z-index:2;pointer-events:none;"></div>
+  <div class="pong-dot" style="position:fixed;width:6px;height:6px;border-radius:50%;background:#000;z-index:2;pointer-events:none;"></div>
+  <div class="pong-dot" style="position:fixed;width:6px;height:6px;border-radius:50%;background:#000;z-index:2;pointer-events:none;"></div>
 
   <div class="illo-wrap" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1;pointer-events:none;">
     <img src="sodtscience_illo_01.png" width="320" height="320" style="display:block;mix-blend-mode:multiply;opacity:0.55;">
@@ -1114,24 +1118,31 @@
       makeDraggable(document.getElementById('termsDrawer'),   document.querySelector('#termsDrawer .mac-titlebar'));
     });
 
-    // Pong dot
+    // Pong balls
     (function() {
-      var dot = document.getElementById('pong-dot');
+      var dots = document.querySelectorAll('.pong-dot');
       var r = 3;
-      var x = window.innerWidth  * 0.3 + Math.random() * window.innerWidth  * 0.4;
-      var y = window.innerHeight * 0.3 + Math.random() * window.innerHeight * 0.4;
-      var speed = 1.8;
-      var angle = (Math.PI / 4) + Math.random() * (Math.PI / 2);
-      var vx = Math.cos(angle) * speed;
-      var vy = Math.sin(angle) * speed;
+      var balls = Array.prototype.map.call(dots, function(dot, i) {
+        var speed = 1.2 + Math.random() * 1.2;
+        var angle = Math.random() * Math.PI * 2;
+        return {
+          el: dot,
+          x: window.innerWidth  * 0.2 + Math.random() * window.innerWidth  * 0.6,
+          y: window.innerHeight * 0.2 + Math.random() * window.innerHeight * 0.6,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed
+        };
+      });
       function tick() {
-        x += vx; y += vy;
-        if (x - r <= 0)                    { x = r;                          vx =  Math.abs(vx); }
-        if (x + r >= window.innerWidth)    { x = window.innerWidth  - r;     vx = -Math.abs(vx); }
-        if (y - r <= 0)                    { y = r;                          vy =  Math.abs(vy); }
-        if (y + r >= window.innerHeight)   { y = window.innerHeight - r;     vy = -Math.abs(vy); }
-        dot.style.left = (x - r) + 'px';
-        dot.style.top  = (y - r) + 'px';
+        balls.forEach(function(b) {
+          b.x += b.vx; b.y += b.vy;
+          if (b.x - r <= 0)                 { b.x = r;                        b.vx =  Math.abs(b.vx); }
+          if (b.x + r >= window.innerWidth) { b.x = window.innerWidth  - r;   b.vx = -Math.abs(b.vx); }
+          if (b.y - r <= 0)                 { b.y = r;                        b.vy =  Math.abs(b.vy); }
+          if (b.y + r >= window.innerHeight){ b.y = window.innerHeight - r;   b.vy = -Math.abs(b.vy); }
+          b.el.style.left = (b.x - r) + 'px';
+          b.el.style.top  = (b.y - r) + 'px';
+        });
         requestAnimationFrame(tick);
       }
       tick();
