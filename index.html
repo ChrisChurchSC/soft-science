@@ -156,15 +156,14 @@
       padding-left: 16px;
       position: relative;
     }
-    .bottom-titlebar span[data-tooltip]::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      bottom: calc(100% + 6px);
-      right: 0;
+    #titleTooltip {
+      position: fixed;
       background: #111;
       border: 1px solid rgba(255,45,155,0.3);
       color: #ff2d9b;
+      font-family: 'DIN Alternate','DIN Condensed','Arial Narrow',Arial,sans-serif;
       font-size: 8px;
+      font-weight: 900;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       padding: 4px 8px;
@@ -172,12 +171,10 @@
       pointer-events: none;
       opacity: 0;
       transition: opacity 0.15s ease;
-      transition-delay: 0s;
-      z-index: 100;
+      z-index: 9999;
     }
-    .bottom-titlebar span[data-tooltip]:hover::after {
+    #titleTooltip.visible {
       opacity: 1;
-      transition-delay: 0.7s;
     }
 
     .grid { display: flex; flex-direction: column; }
@@ -899,8 +896,25 @@
       });
 
       // Tooltip on truncated window titles
+      var tooltip = document.getElementById('titleTooltip');
+      var tooltipTimer = null;
       document.querySelectorAll('.bottom-titlebar span').forEach(function(span) {
-        span.setAttribute('data-tooltip', span.textContent.trim());
+        span.addEventListener('mouseenter', function() {
+          tooltipTimer = setTimeout(function() {
+            var rect = span.getBoundingClientRect();
+            tooltip.textContent = span.textContent.trim();
+            tooltip.style.left = (rect.right - tooltip.offsetWidth) + 'px';
+            tooltip.style.top  = (rect.top - tooltip.offsetHeight - 6) + 'px';
+            tooltip.classList.add('visible');
+            // reposition after render in case offsetWidth was 0
+            tooltip.style.left = (rect.right - tooltip.offsetWidth) + 'px';
+            tooltip.style.top  = (rect.top - tooltip.offsetHeight - 6) + 'px';
+          }, 700);
+        });
+        span.addEventListener('mouseleave', function() {
+          clearTimeout(tooltipTimer);
+          tooltip.classList.remove('visible');
+        });
       });
 
       // Newsletter submit
@@ -1040,5 +1054,6 @@
       makeDraggable(document.getElementById('termsDrawer'),   document.querySelector('#termsDrawer .mac-titlebar'));
     });
   </script>
+  <div id="titleTooltip"></div>
 </body>
 </html>
