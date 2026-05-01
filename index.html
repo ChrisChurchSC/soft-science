@@ -410,25 +410,67 @@
       transition: opacity 0.4s ease;
     }
     #loader.fade { opacity: 0; pointer-events: none; }
-    .loader-line {
-      font-family: 'DIN Alternate','DIN Condensed','Arial Narrow',Arial,sans-serif;
-      font-weight: 900;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      opacity: 0;
-      animation: fadeIn 0.35s ease forwards;
+    #hgWrap {
+      width: 30px; height: 42px;
+      position: relative;
+      animation: fadeIn 0.3s ease 0.1s both;
     }
-    .loader-line.l1 { font-size: 13px; color: rgba(255,45,155,0.9); animation-delay: 0.15s; }
-    .loader-line.l2 { font-size: 9px;  color: rgba(255,45,155,0.4); margin-top: 5px; animation-delay: 0.55s; }
-    .loader-cursor  {
-      font-family: monospace;
-      font-size: 16px;
-      color: #ff2d9b;
-      margin-top: 14px;
-      opacity: 0;
-      animation: fadeIn 0.2s ease 0.95s forwards, blink 0.7s step-start 0.95s infinite;
+    #hgPixel {
+      position: absolute; left: 0; top: 0;
+      width: 6px; height: 6px;
+      background: transparent;
+      animation: hourglassSand 1.2s steps(1, end) infinite;
     }
-    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+    /* 5×7 pixel hourglass — each pixel = 6px, box-shadow paints all pixels */
+    /* Outline: rgba(255,45,155,0.75)  Sand: #ff2d9b */
+    @keyframes hourglassSand {
+      /* Frame 1 — sand all at top */
+      0% { box-shadow:
+        0 0 0 0 rgba(255,45,155,.75), 6px 0 0 0 rgba(255,45,155,.75), 12px 0 0 0 rgba(255,45,155,.75), 18px 0 0 0 rgba(255,45,155,.75), 24px 0 0 0 rgba(255,45,155,.75),
+        0 6px 0 0 rgba(255,45,155,.75), 24px 6px 0 0 rgba(255,45,155,.75),
+        6px 12px 0 0 rgba(255,45,155,.75), 18px 12px 0 0 rgba(255,45,155,.75),
+        12px 18px 0 0 rgba(255,45,155,.75),
+        6px 24px 0 0 rgba(255,45,155,.75), 18px 24px 0 0 rgba(255,45,155,.75),
+        0 30px 0 0 rgba(255,45,155,.75), 24px 30px 0 0 rgba(255,45,155,.75),
+        0 36px 0 0 rgba(255,45,155,.75), 6px 36px 0 0 rgba(255,45,155,.75), 12px 36px 0 0 rgba(255,45,155,.75), 18px 36px 0 0 rgba(255,45,155,.75), 24px 36px 0 0 rgba(255,45,155,.75),
+        6px 6px 0 0 #ff2d9b, 12px 6px 0 0 #ff2d9b, 18px 6px 0 0 #ff2d9b,
+        12px 12px 0 0 #ff2d9b;
+      }
+      /* Frame 2 — top row only, starting to fall */
+      25% { box-shadow:
+        0 0 0 0 rgba(255,45,155,.75), 6px 0 0 0 rgba(255,45,155,.75), 12px 0 0 0 rgba(255,45,155,.75), 18px 0 0 0 rgba(255,45,155,.75), 24px 0 0 0 rgba(255,45,155,.75),
+        0 6px 0 0 rgba(255,45,155,.75), 24px 6px 0 0 rgba(255,45,155,.75),
+        6px 12px 0 0 rgba(255,45,155,.75), 18px 12px 0 0 rgba(255,45,155,.75),
+        12px 18px 0 0 rgba(255,45,155,.75),
+        6px 24px 0 0 rgba(255,45,155,.75), 18px 24px 0 0 rgba(255,45,155,.75),
+        0 30px 0 0 rgba(255,45,155,.75), 24px 30px 0 0 rgba(255,45,155,.75),
+        0 36px 0 0 rgba(255,45,155,.75), 6px 36px 0 0 rgba(255,45,155,.75), 12px 36px 0 0 rgba(255,45,155,.75), 18px 36px 0 0 rgba(255,45,155,.75), 24px 36px 0 0 rgba(255,45,155,.75),
+        6px 6px 0 0 #ff2d9b, 12px 6px 0 0 #ff2d9b, 18px 6px 0 0 #ff2d9b;
+      }
+      /* Frame 3 — top empty, bottom row filling */
+      50% { box-shadow:
+        0 0 0 0 rgba(255,45,155,.75), 6px 0 0 0 rgba(255,45,155,.75), 12px 0 0 0 rgba(255,45,155,.75), 18px 0 0 0 rgba(255,45,155,.75), 24px 0 0 0 rgba(255,45,155,.75),
+        0 6px 0 0 rgba(255,45,155,.75), 24px 6px 0 0 rgba(255,45,155,.75),
+        6px 12px 0 0 rgba(255,45,155,.75), 18px 12px 0 0 rgba(255,45,155,.75),
+        12px 18px 0 0 rgba(255,45,155,.75),
+        6px 24px 0 0 rgba(255,45,155,.75), 18px 24px 0 0 rgba(255,45,155,.75),
+        0 30px 0 0 rgba(255,45,155,.75), 24px 30px 0 0 rgba(255,45,155,.75),
+        0 36px 0 0 rgba(255,45,155,.75), 6px 36px 0 0 rgba(255,45,155,.75), 12px 36px 0 0 rgba(255,45,155,.75), 18px 36px 0 0 rgba(255,45,155,.75), 24px 36px 0 0 rgba(255,45,155,.75),
+        6px 30px 0 0 #ff2d9b, 12px 30px 0 0 #ff2d9b, 18px 30px 0 0 #ff2d9b;
+      }
+      /* Frame 4 — sand all at bottom */
+      75% { box-shadow:
+        0 0 0 0 rgba(255,45,155,.75), 6px 0 0 0 rgba(255,45,155,.75), 12px 0 0 0 rgba(255,45,155,.75), 18px 0 0 0 rgba(255,45,155,.75), 24px 0 0 0 rgba(255,45,155,.75),
+        0 6px 0 0 rgba(255,45,155,.75), 24px 6px 0 0 rgba(255,45,155,.75),
+        6px 12px 0 0 rgba(255,45,155,.75), 18px 12px 0 0 rgba(255,45,155,.75),
+        12px 18px 0 0 rgba(255,45,155,.75),
+        6px 24px 0 0 rgba(255,45,155,.75), 18px 24px 0 0 rgba(255,45,155,.75),
+        0 30px 0 0 rgba(255,45,155,.75), 24px 30px 0 0 rgba(255,45,155,.75),
+        0 36px 0 0 rgba(255,45,155,.75), 6px 36px 0 0 rgba(255,45,155,.75), 12px 36px 0 0 rgba(255,45,155,.75), 18px 36px 0 0 rgba(255,45,155,.75), 24px 36px 0 0 rgba(255,45,155,.75),
+        12px 24px 0 0 #ff2d9b,
+        6px 30px 0 0 #ff2d9b, 12px 30px 0 0 #ff2d9b, 18px 30px 0 0 #ff2d9b;
+      }
+    }
 
     @keyframes windowIn {
       from { opacity: 0; transform: translateY(14px); }
@@ -545,11 +587,7 @@
 <body>
 
   <div id="loader">
-    <div style="text-align:center;">
-      <div class="loader-line l1">Soft Science</div>
-      <div class="loader-line l2">Venture Studio</div>
-      <div class="loader-cursor">_</div>
-    </div>
+    <div id="hgWrap"><div id="hgPixel"></div></div>
   </div>
 
   <div class="legal-top">
