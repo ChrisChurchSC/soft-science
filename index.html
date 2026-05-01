@@ -410,67 +410,14 @@
       transition: opacity 0.4s ease;
     }
     #loader.fade { opacity: 0; pointer-events: none; }
-    #hgWrap {
-      width: 30px; height: 42px;
-      position: relative;
-      animation: fadeIn 0.3s ease 0.1s both;
+    #spinner {
+      width: 28px; height: 28px;
+      border: 2px solid rgba(255,45,155,0.2);
+      border-top-color: #ff2d9b;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
     }
-    #hgPixel {
-      position: absolute; left: 0; top: 0;
-      width: 6px; height: 6px;
-      background: transparent;
-      animation: hourglassSand 1.2s steps(1, end) infinite;
-    }
-    /* 5×7 pixel hourglass — each pixel = 6px, box-shadow paints all pixels */
-    /* Outline: rgba(255,45,155,0.75)  Sand: #ff2d9b */
-    @keyframes hourglassSand {
-      /* Frame 1 — sand all at top */
-      0% { box-shadow:
-        0 0 0 0 rgba(255,45,155,.75), 6px 0 0 0 rgba(255,45,155,.75), 12px 0 0 0 rgba(255,45,155,.75), 18px 0 0 0 rgba(255,45,155,.75), 24px 0 0 0 rgba(255,45,155,.75),
-        0 6px 0 0 rgba(255,45,155,.75), 24px 6px 0 0 rgba(255,45,155,.75),
-        6px 12px 0 0 rgba(255,45,155,.75), 18px 12px 0 0 rgba(255,45,155,.75),
-        12px 18px 0 0 rgba(255,45,155,.75),
-        6px 24px 0 0 rgba(255,45,155,.75), 18px 24px 0 0 rgba(255,45,155,.75),
-        0 30px 0 0 rgba(255,45,155,.75), 24px 30px 0 0 rgba(255,45,155,.75),
-        0 36px 0 0 rgba(255,45,155,.75), 6px 36px 0 0 rgba(255,45,155,.75), 12px 36px 0 0 rgba(255,45,155,.75), 18px 36px 0 0 rgba(255,45,155,.75), 24px 36px 0 0 rgba(255,45,155,.75),
-        6px 6px 0 0 #ff2d9b, 12px 6px 0 0 #ff2d9b, 18px 6px 0 0 #ff2d9b,
-        12px 12px 0 0 #ff2d9b;
-      }
-      /* Frame 2 — top row only, starting to fall */
-      25% { box-shadow:
-        0 0 0 0 rgba(255,45,155,.75), 6px 0 0 0 rgba(255,45,155,.75), 12px 0 0 0 rgba(255,45,155,.75), 18px 0 0 0 rgba(255,45,155,.75), 24px 0 0 0 rgba(255,45,155,.75),
-        0 6px 0 0 rgba(255,45,155,.75), 24px 6px 0 0 rgba(255,45,155,.75),
-        6px 12px 0 0 rgba(255,45,155,.75), 18px 12px 0 0 rgba(255,45,155,.75),
-        12px 18px 0 0 rgba(255,45,155,.75),
-        6px 24px 0 0 rgba(255,45,155,.75), 18px 24px 0 0 rgba(255,45,155,.75),
-        0 30px 0 0 rgba(255,45,155,.75), 24px 30px 0 0 rgba(255,45,155,.75),
-        0 36px 0 0 rgba(255,45,155,.75), 6px 36px 0 0 rgba(255,45,155,.75), 12px 36px 0 0 rgba(255,45,155,.75), 18px 36px 0 0 rgba(255,45,155,.75), 24px 36px 0 0 rgba(255,45,155,.75),
-        6px 6px 0 0 #ff2d9b, 12px 6px 0 0 #ff2d9b, 18px 6px 0 0 #ff2d9b;
-      }
-      /* Frame 3 — top empty, bottom row filling */
-      50% { box-shadow:
-        0 0 0 0 rgba(255,45,155,.75), 6px 0 0 0 rgba(255,45,155,.75), 12px 0 0 0 rgba(255,45,155,.75), 18px 0 0 0 rgba(255,45,155,.75), 24px 0 0 0 rgba(255,45,155,.75),
-        0 6px 0 0 rgba(255,45,155,.75), 24px 6px 0 0 rgba(255,45,155,.75),
-        6px 12px 0 0 rgba(255,45,155,.75), 18px 12px 0 0 rgba(255,45,155,.75),
-        12px 18px 0 0 rgba(255,45,155,.75),
-        6px 24px 0 0 rgba(255,45,155,.75), 18px 24px 0 0 rgba(255,45,155,.75),
-        0 30px 0 0 rgba(255,45,155,.75), 24px 30px 0 0 rgba(255,45,155,.75),
-        0 36px 0 0 rgba(255,45,155,.75), 6px 36px 0 0 rgba(255,45,155,.75), 12px 36px 0 0 rgba(255,45,155,.75), 18px 36px 0 0 rgba(255,45,155,.75), 24px 36px 0 0 rgba(255,45,155,.75),
-        6px 30px 0 0 #ff2d9b, 12px 30px 0 0 #ff2d9b, 18px 30px 0 0 #ff2d9b;
-      }
-      /* Frame 4 — sand all at bottom */
-      75% { box-shadow:
-        0 0 0 0 rgba(255,45,155,.75), 6px 0 0 0 rgba(255,45,155,.75), 12px 0 0 0 rgba(255,45,155,.75), 18px 0 0 0 rgba(255,45,155,.75), 24px 0 0 0 rgba(255,45,155,.75),
-        0 6px 0 0 rgba(255,45,155,.75), 24px 6px 0 0 rgba(255,45,155,.75),
-        6px 12px 0 0 rgba(255,45,155,.75), 18px 12px 0 0 rgba(255,45,155,.75),
-        12px 18px 0 0 rgba(255,45,155,.75),
-        6px 24px 0 0 rgba(255,45,155,.75), 18px 24px 0 0 rgba(255,45,155,.75),
-        0 30px 0 0 rgba(255,45,155,.75), 24px 30px 0 0 rgba(255,45,155,.75),
-        0 36px 0 0 rgba(255,45,155,.75), 6px 36px 0 0 rgba(255,45,155,.75), 12px 36px 0 0 rgba(255,45,155,.75), 18px 36px 0 0 rgba(255,45,155,.75), 24px 36px 0 0 rgba(255,45,155,.75),
-        12px 24px 0 0 #ff2d9b,
-        6px 30px 0 0 #ff2d9b, 12px 30px 0 0 #ff2d9b, 18px 30px 0 0 #ff2d9b;
-      }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     @keyframes windowIn {
       from { opacity: 0; transform: translateY(14px); }
@@ -587,7 +534,7 @@
 <body>
 
   <div id="loader">
-    <div id="hgWrap"><div id="hgPixel"></div></div>
+    <div id="spinner"></div>
   </div>
 
   <div class="legal-top">
